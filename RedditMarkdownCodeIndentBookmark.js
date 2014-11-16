@@ -1,6 +1,8 @@
 javascript: (function() {
-  function replaceSelectedText(replacementText) {
-    $('.usertext-edit > div > textarea').val(replacementText);
+  function replaceSelectedText(originalText, replacementText) {
+    var originalString  = $('.usertext-edit > div > textarea').val();
+    var newString       = originalString.replace(originalText, replacementText);
+    $('.usertext-edit > div > textarea').val(newString);
   }
 
   function getSelectedText() {
@@ -22,8 +24,8 @@ javascript: (function() {
     return indentedText.join('');
   }
 
-  var text = getSelectedText();
-  var indentedText = addIndentation(text);
-  replaceSelectedText(indentedText);
+  var originalText = getSelectedText();
+  var indentedText = addIndentation(originalText);
+  replaceSelectedText(originalText, indentedText);
 
 })();
