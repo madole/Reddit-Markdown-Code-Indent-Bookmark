@@ -1,31 +1,37 @@
-javascript: (function() {
+javascript: (function () {
+  var originalText, indentedText;
+
   function replaceSelectedText(originalText, replacementText) {
-    var originalString  = $('.usertext-edit > div > textarea').val();
-    var newString       = originalString.replace(originalText, replacementText);
-    $('.usertext-edit > div > textarea').val(newString);
+    var textArea, originalString, newString;
+    textArea        = $('.usertext-edit > div > textarea');
+    originalString  = textArea.val();
+    newString       = originalString.replace(originalText, replacementText);
+    textArea.val(newString);
   }
 
   function getSelectedText() {
     return window.getSelection().toString();
   }
 
-  function addIndentation(text) {
-    var arrText = text.split('');
-    var indentedText = arrText.map(function(character, i) {
+  function addIndentToCharacter(character, i) {
+    if (i === 0) {
+      return '    ' + character;
+    }
+    if (character.match(/\r/) || character.match(/\n/)) {
+      return character + '    ';
+    }
+    return character;
+  }
 
-      if (i === 0) {
-        character = '    ' + character;
-      }
-      if (character.match(/\r/) || character.match(/\n/)) {
-        character = character + '    ';
-      }
-      return character;
-    });
+  function addIndentation(text) {
+    var arrText, indentedText;
+    arrText = text.split('');
+    indentedText = arrText.map(addIndentToCharacter);
     return indentedText.join('');
   }
 
-  var originalText = getSelectedText();
-  var indentedText = addIndentation(originalText);
+  originalText = getSelectedText();
+  indentedText = addIndentation(originalText);
   replaceSelectedText(originalText, indentedText);
 
 })();
